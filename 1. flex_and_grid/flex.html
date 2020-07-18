@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .flex { 
+            background: #f7f7f7; border-radius: 3px; padding: 20px;
+            counter-reset: items;}
+        .item { 
+            background: #a2cbfa; border: 1px solid #4390e1;
+            box-sizing: border-box;
+            padding: 10px;
+            border-radius: 3px;
+            min-height: 100px;
+            }
+        .item::before {
+            counter-increment: items;
+            content: counter(items);
+        }
+        /* 그리드는 레이아웃 플렉스는 블록 여러개 들어갈 때 */
+        
+        /* flex1 */
+        .flex1 {display: flex;}
+        /* .item1 { flex-grow: 1; margin-left: 2%;}
+        .item1:first-child {margin-left: 0;} */
+        .item1 { flex-grow: 1;}
+        .item1 + .item1 { margin-left: 2%;}
+    </style>
+</head>
+<body>
+    <div class="flex flex1">
+        <div class="item item1"></div>
+        <div class="item item1"></div>
+        <div class="item item1"></div>
+        <div class="item item1"></div>
+        <div class="item item1"></div>
+        <div class="item item1"></div>
+        <div class="item item1"></div>
+        <div class="item item1"></div>
+ 
+    </div>
+</body>
+</html>

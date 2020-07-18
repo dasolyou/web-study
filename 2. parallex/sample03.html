@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Parallax01</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        :root { font-size: 16px;}
+        body {
+            --color-h1: #dc6e25;
+            --color-title: #fff;
+            --color-sub: #999;
+            --color-link: #000;
+            --color-bg: #111;
+            --image-widthMax: 500px;
+            --aspect-ratio: 32/17;
+            color: var(--color-title);
+            background-color: var( --color-bg);
+            font-family: 'Lato', sans-serif;
+        }  /* 변수 -- */
+        
+        #wrap h1 {
+            font-size: 8vw; /*vw 화면을 100등분해서 8만큼, rem root의 8배, vh, em 부모박스의 상속-> 반응형vw,rem*/
+            padding: 5vw;
+            color: var(--color-h1);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        #wrap h1 em {
+            display: block;
+            padding-left: 20vw;
+            font-weight: 100;
+        }
+        .contents {
+            width: 100%;
+            padding: 35vh 0 40vh;
+            overflow: hidden;
+        }
+        .content-item {
+            /* width: 1000px; */
+            --image-width: calc(var(--image-widthMax) * var(--aspect-ratio));
+            width: var(--image-width); 
+            margin: 10vh 0 45vh;
+            max-width: 90vw;
+            position: relative;
+        }
+        .content-item:nth-child(even){
+            margin-left: auto;
+        }
+        .content-item-num {
+            font-size: 23vw;
+            opacity: 0.4;
+            line-height: 1;
+            font-weight: 100;
+            color: var(--color-title);
+            position: absolute;
+            top: -13vw; right: -10vw;
+        }
+        .content-item:nth-child(even) .content-item-num {
+            right: auto; left: -7vw;
+        }
+        .content-item-title { 
+            text-align: right;
+            font-weight: 300;
+            text-transform: capitalize;
+            color: var(--color-sub);
+            padding-bottom: 0.8vw;
+            font-size: 1.5rem;
+
+        }
+        .content-item:nth-child(even) .content-item-title {
+            text-align: left;
+        }
+        .content-item-imgWrap {
+            /* width: 100%;
+            padding-bottom: 57%; */
+            --width: 100%;
+            width: var(--width);
+            padding-bottom: calc(var(--width) / (var(--aspect-ratio)));
+            will-change: transform;  /*애니효과 속도 느린것 해결*/
+            position: relative; z-index: 10;
+            overflow: hidden;
+        }
+        .content-item-img {
+            /* height: 550px;
+            position: absolute;
+            top: -30px; */
+            width: var(--width);
+            background-size: cover;
+            background-position: 50% 0;
+            --overflow: 40px;
+            height: calc(100% + (2 * var(--overflow)));
+            position: absolute;
+            top: clac(-1 * var(--overflow));
+            will-change: transform;
+        }
+        .content-item-desc {
+            font-size: 6vw;
+            line-height: 1.2;
+            font-weight: 600;text-transform: uppercase;
+            color: var(--color-title);
+            text-align: right;
+            word-break: keep-all;
+            margin-top: -8vw;
+            margin-right: -5vw;
+            position: relative;
+            z-index: 20;
+        }
+        .content-item:nth-child(even) .content-item-desc {
+            text-align: left;
+            margin-right: 0;
+            margin-left: -5vw;
+        }
+
+        #section1 .content-item-img {background-image: url(img/so01.jpg);}
+        #section2 .content-item-img {background-image: url(img/so02.jpg);}
+        #section3 .content-item-img {background-image: url(img/so03.jpg);}
+        #section4 .content-item-img {background-image: url(img/so04.jpg);}
+        #section5 .content-item-img {background-image: url(img/so05.jpg);}
+        #section6 .content-item-img {background-image: url(img/so06.jpg);}
+        #section7 .content-item-img {background-image: url(img/so07.jpg);}
+        #section8 .content-item-img {background-image: url(img/so08.jpg);}
+        #section9 .content-item-img {background-image: url(img/so09.jpg);}
+        .info {
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(255,255,255,0.4);
+            color: #000;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 300;
+            z-index: 1000;
+            font-style: normal;
+        }
+
+        .contents > section {opacity: 0; transform: translateY(100px); transition: all 0.6s ease;}
+        .contents > section.show {opacity: 1; transform: translateY(0);}
+        
+    </style>
+</head>
+<body>
+    <div class="info">
+        <span>scrollTop(): <strong class="scrollTop">0</strong>px</span><br>
+        <span>#section1 offset: <strong class="s1OT">0</strong>px</span><br>
+        <span>#section2 offset: <strong class="s2OT">0</strong>px</span><br>
+        <span>#section3 offset: <strong class="s3OT">0</strong>px</span><br>
+        <span>#section4 offset: <strong class="s4OT">0</strong>px</span><br>
+        <span>#section5 offset: <strong class="s5OT">0</strong>px</span><br>
+        <span>#section6 offset: <strong class="s6OT">0</strong>px</span><br>
+        <span>#section7 offset: <strong class="s7OT">0</strong>px</span><br>
+        <span>#section8 offset: <strong class="s8OT">0</strong>px</span><br>
+        <span>#section9 offset: <strong class="s9OT">0</strong>px</span><br>
+        <span>pageXOffset(): <strong class="pageXOffset">0</strong>px</span>
+    </div>
+    <div id="wrap">
+        <h1>Parallax <em>Scrolling</em></h1>
+        <div class="contents">
+            <section id="section1" class="content-item">
+                <span class="content-item-num">01</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc">
+                    높은 목표를 세우고, 스스로 채찍질한다.
+                </p>
+            </section>
+            <section id="section2" class="content-item">
+                <span class="content-item-num">02</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc">
+                    높은 목표를 세우고, 스스로 채찍질한다.
+                </p>
+            </section>
+            <section id="section3" class="content-item">
+                <span class="content-item-num">03</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc">
+                    높은 목표를 세우고, 스스로 채찍질한다.
+                </p>
+            </section>
+            <section id="section4" class="content-item">
+                <span class="content-item-num">04</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc">
+                    높은 목표를 세우고, 스스로 채찍질한다.
+                </p>
+            </section>
+            <section id="section5" class="content-item">
+                <span class="content-item-num">05</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc">
+                    높은 목표를 세우고, 스스로 채찍질한다.
+                </p>
+            </section>
+            <section id="section6" class="content-item">
+                <span class="content-item-num">06</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc">
+                    높은 목표를 세우고, 스스로 채찍질한다.
+                </p>
+            </section>
+            <section id="section7" class="content-item">
+                <span class="content-item-num">07</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc">
+                    높은 목표를 세우고, 스스로 채찍질한다.
+                </p>
+            </section>
+            <section id="section8" class="content-item">
+                <span class="content-item-num">08</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc">
+                    높은 목표를 세우고, 스스로 채찍질한다.
+                </p>
+            </section>
+            <section id="section9" class="content-item">
+                <span class="content-item-num">09</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc">
+                    높은 목표를 세우고, 스스로 채찍질한다.
+                </p>
+            </section>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src= https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js></script>
+    <script>
+        // jQuery
+        $(window).scroll(function(){
+            const scrollTop = parseInt($(window).scrollTop() + $(window).height()/2);
+            // const scrollLeft = parseInt($(window).scrollLeft());
+            const s1OT = parseInt($("#section1").offset().top);
+            const s2OT = parseInt($("#section2").offset().top);
+            const s3OT = parseInt($("#section3").offset().top);
+            const s4OT = parseInt($("#section4").offset().top);
+            const s5OT = parseInt($("#section5").offset().top);
+            const s6OT = parseInt($("#section6").offset().top);
+            const s7OT = parseInt($("#section7").offset().top);
+            const s8OT = parseInt($("#section8").offset().top);
+            const s9OT = parseInt($("#section9").offset().top);
+            
+            $(".scrollTop").text(scrollTop);
+            $(".s1OT").text(s1OT);
+            $(".s2OT").text(s2OT);
+            $(".s3OT").text(s3OT);
+            $(".s4OT").text(s4OT);
+            $(".s5OT").text(s5OT);
+            $(".s6OT").text(s6OT);
+            $(".s7OT").text(s7OT);
+            $(".s8OT").text(s8OT);
+            $(".s9OT").text(s9OT);
+
+            if(scrollTop > s1OT){$(".s1OT").css("color", "red");} else{ $(".s1OT").css("color", "black");}
+            if(scrollTop > s2OT){$(".s2OT").css("color", "red");} else{ $(".s2OT").css("color", "black");}
+            if(scrollTop > s3OT){$(".s3OT").css("color", "red");} else{ $(".s3OT").css("color", "black");}
+            if(scrollTop > s4OT){$(".s4OT").css("color", "red");} else{ $(".s4OT").css("color", "black");}
+            if(scrollTop > s5OT){$(".s5OT").css("color", "red");} else{ $(".s5OT").css("color", "black");}
+            if(scrollTop > s6OT){$(".s6OT").css("color", "red");} else{ $(".s6OT").css("color", "black");}
+            if(scrollTop > s7OT){$(".s7OT").css("color", "red");} else{ $(".s7OT").css("color", "black");}
+            if(scrollTop > s8OT){$(".s8OT").css("color", "red");} else{ $(".s8OT").css("color", "black");}
+            if(scrollTop > s9OT){$(".s9OT").css("color", "red");} else{ $(".s9OT").css("color", "black");}
+           
+            // 노가다
+            // if(scrollTop > $("#section1").offset().top){$("#section1").addClass("show");}
+            // if(scrollTop > $("#section2").offset().top){$("#section2").addClass("show");}
+            // if(scrollTop > $("#section3").offset().top){$("#section3").addClass("show");}
+            // if(scrollTop > $("#section4").offset().top){$("#section4").addClass("show");}
+            // if(scrollTop > $("#section5").offset().top){$("#section5").addClass("show");}
+            // if(scrollTop > $("#section6").offset().top){$("#section6").addClass("show");}
+            // if(scrollTop > $("#section7").offset().top){$("#section7").addClass("show");}
+            // if(scrollTop > $("#section8").offset().top){$("#section8").addClass("show");}
+            // if(scrollTop > $("#section9").offset().top){$("#section9").addClass("show");}
+
+            //한번에 쓰기
+            // $(".content-item").each(function(index, element){
+                // console.log(element)
+            // });
+            $(".content-item").each(function(){
+                if( scrollTop > $(this).offset().top ){
+                    $(this).addClass("show");
+                }
+            });
+
+
+        });
+        
+        //javascript
+        let pageXOffset = window.pageXOffset;
+        
+        
+    </script>
+</body>
+</html>

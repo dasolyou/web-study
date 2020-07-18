@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .grid { background: #f7f7f7; padding: 20px; counter-reset: items;}
+        .column {
+            background: #a2cbfa; border: 1px solid #4390e1;
+            box-sizing: border-box;
+            padding: 10px;
+            border-radius: 3px;
+            min-height: 100px;
+        }
+        .column::before { counter-increment: items;
+            content: counter(items);
+        }
+        /* grid1 */
+        .grid1 { 
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /*width*/
+            grid-template-rows: repeat(3, minmax(100px, auto)); /*width*/
+            grid-gap: 20px;
+            grid-template-areas: 
+                "side header header"
+                "side cont cont"
+                "side cont cont"
+                "footer footer footer"; 
+                /* 기역 니은 모양은 안됨 */
+        }
+        .column1:nth-child(1) { grid-area: header;}
+        .column1:nth-child(2) { grid-area: side;}
+        .column1:nth-child(3) { grid-area: cont;}
+        .column1:nth-child(4) { grid-area: footer;}
+    </style>
+</head>
+<body>
+    <div class="grid grid1">
+        <div class="column column1"></div>
+        <div class="column column1"></div>
+        <div class="column column1"></div>
+        <div class="column column1"></div>
+    </div>
+</body>
+</html>

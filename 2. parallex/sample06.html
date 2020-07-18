@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Parallax01</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        :root { font-size: 16px;}
+        body {
+            --color-h1: #dc6e25;
+            --color-title: #fff;
+            --color-sub: #999;
+            --color-link: #000;
+            --color-bg: #111;
+            --image-widthMax: 500px;
+            --aspect-ratio: 32/17;
+            color: var(--color-title);
+            background-color: var( --color-bg);
+            font-family: 'Lato', sans-serif;
+        }  /* 변수 -- */
+        
+        #wrap h1 {
+            font-size: 8vw; /*vw 화면을 100등분해서 8만큼, rem root의 8배, vh, em 부모박스의 상속-> 반응형vw,rem*/
+            padding: 5vw;
+            color: var(--color-h1);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        #wrap h1 em {
+            display: block;
+            padding-left: 20vw;
+            font-weight: 100;
+        }
+        .contents {
+            width: 100%;
+            padding: 35vh 0 40vh;
+            overflow: hidden;
+        }
+        .content-item {
+            /* width: 1000px; */
+            --image-width: calc(var(--image-widthMax) * var(--aspect-ratio));
+            width: var(--image-width); 
+            margin: 10vh 0 45vh;
+            max-width: 90vw;
+            position: relative;
+        }
+        .content-item:nth-child(even){
+            margin-left: auto;
+        }
+        .content-item-num {
+            font-size: 23vw;
+            opacity: 0.4;
+            line-height: 1;
+            font-weight: 100;
+            color: var(--color-title);
+            position: absolute;
+            top: -13vw; right: -10vw;
+        }
+        .content-item:nth-child(even) .content-item-num {
+            right: auto; left: -7vw;
+        }
+        .content-item-title { 
+            text-align: right;
+            font-weight: 300;
+            text-transform: capitalize;
+            color: var(--color-sub);
+            padding-bottom: 0.8vw;
+            font-size: 1.5rem;
+
+        }
+        .content-item:nth-child(even) .content-item-title {
+            text-align: left;
+        }
+        .content-item-imgWrap {
+            /* width: 100%;
+            padding-bottom: 57%; */
+            --width: 100%;
+            width: var(--width);
+            padding-bottom: calc(var(--width) / (var(--aspect-ratio)));
+            will-change: transform;  /*애니효과 속도 느린것 해결*/
+            position: relative; z-index: 10;
+            overflow: hidden;
+        }
+        .content-item-img {
+            /* height: 550px;
+            position: absolute;
+            top: -30px; */
+            width: var(--width);
+            background-size: cover;
+            background-position: 50% 0;
+            --overflow: 40px;
+            height: calc(100% + (2 * var(--overflow)));
+            position: absolute;
+            top: clac(-1 * var(--overflow));
+            will-change: transform;
+        }
+        .content-item-desc {
+            font-size: 6vw;
+            line-height: 1.2;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--color-title);
+            text-align: right;
+            word-break: keep-all;
+            margin-top: -8vw;
+            margin-right: -5vw;
+            position: relative;
+            z-index: 20;
+        }
+        .content-item:nth-child(even) .content-item-desc {
+            text-align: left;
+            margin-right: 0;
+            margin-left: -5vw;
+        }
+
+        #section1 .content-item-img {background-image: url(img/so01.jpg);}
+        #section2 .content-item-img {background-image: url(img/so02.jpg);}
+        #section3 .content-item-img {background-image: url(img/so03.jpg);}
+        #section4 .content-item-img {background-image: url(img/so04.jpg);}
+        #section5 .content-item-img {background-image: url(img/so05.jpg);}
+        #section6 .content-item-img {background-image: url(img/so06.jpg);}
+        #section7 .content-item-img {background-image: url(img/so07.jpg);}
+        #section8 .content-item-img {background-image: url(img/so08.jpg);}
+        #section9 .content-item-img {background-image: url(img/so09.jpg);}
+       
+        p[class^="split"]span{color:red}
+        
+        /* split1 */
+        .split1 { opacity: 0; transition: all 0.5s ease;}
+        .split1.show { opacity: 1;}
+
+        .split2 {opacity: 0; transform: translateY(100px); transition: all 0.5s ease;}
+        .split2.show {opacity: 1; transform: translateY(0);}
+
+        .split3 {opacity: 0;}
+        .split3.show {opacity: 1; animation: flipInY 1s ease;}
+
+        .split4 {opacity: 0;}
+        .split4.show {opacity: 1; animation: flipInX 1s ease;}
+
+        .split5 span {opacity: 0; transition: all 0.5s ease;}
+        .split5 span.show {opacity: 1; }
+
+        .split6 span {
+            opacity: 0; transform: translateY(100px); transition: all 0.5s cubic-bezier(0.12, 0.82, 0.32, 1.13);
+            display: inline-block; min-width: 20px; 
+        }
+        .split6 span.show {opacity: 1; transform: translateY(0);}
+
+        .split7 span {opacity: 0; display: inline-block; min-width: 20px;}
+        .split7 span.show {opacity: 1; transform: translateY(0);  animation: flipInY 1s ease;}
+
+        .split8 span {opacity: 0; display: inline-block; transform: translateY(70px); min-width: 20px;}
+        .split8 span.show {opacity: 1;}
+
+        .split9 span {opacity: 0; display: inline-block; transform: rotate(140deg) translateY(70px); min-width: 20px;}
+        .split9 span.show {opacity: 1;}
+
+        @keyframes flipInY {
+            from {
+                transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+                animation-timing-function: ease-in;
+                opacity: 0;
+            }
+
+            40% {
+                transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+                animation-timing-function: ease-in;
+            }
+
+            60% {
+                transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+                opacity: 1;
+            }
+
+            80% {
+                transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+            }
+
+            to {
+                transform: perspective(400px);
+            }
+        }
+
+        @keyframes flipInX {
+            from {
+                -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+                transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+                opacity: 0;
+            }
+
+            40% {
+                -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+                transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+                -webkit-animation-timing-function: ease-in;
+                animation-timing-function: ease-in;
+            }
+
+            60% {
+                -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+                transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+                opacity: 1;
+            }
+
+            80% {
+                -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+                transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+            }
+
+            to {
+                -webkit-transform: perspective(400px);
+                transform: perspective(400px);
+            }
+        }
+
+
+        /* .contents > section {opacity: 0; transform: translateY(100px); transition: all 0.6s ease;} */
+        /* .contents > section.show {opacity: 1; transform: translateY(0);} */
+        
+        /* .info {display: none;} */
+    </style>
+</head>
+<body>
+    </div>
+    <div id="wrap">
+        <h1>Parallax <em>Scrolling</em></h1>
+        <div class="contents">
+            <section id="section1" class="content-item">
+                <span class="content-item-num">01</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc split1">높은 목표를 세우고, 스스로 채찍질한다.</p>
+            </section>
+            <section id="section2" class="content-item">
+                <span class="content-item-num">02</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc split2">높은 목표를 세우고, 스스로 채찍질한다.</p>
+            </section>
+            <section id="section3" class="content-item">
+                <span class="content-item-num">03</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc split3">높은 목표를 세우고, 스스로 채찍질한다.</p>
+            </section>
+            <section id="section4" class="content-item">
+                <span class="content-item-num">04</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc split4">높은 목표를 세우고, 스스로 채찍질한다.</p>
+            </section>
+            <section id="section5" class="content-item">
+                <span class="content-item-num">05</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc split5">높은 목표를 세우고, 스스로 채찍질한다.</p>
+            </section>
+            <section id="section6" class="content-item">
+                <span class="content-item-num">06</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc split6">높은 목표를 세우고, 스스로 채찍질한다.</p>
+            </section>
+            <section id="section7" class="content-item">
+                <span class="content-item-num">07</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc split7">높은 목표를 세우고, 스스로 채찍질한다.</p>
+            </section>
+            <section id="section8" class="content-item">
+                <span class="content-item-num">08</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc split8">높은 목표를 세우고, 스스로 채찍질한다.</p>
+            </section>
+            <section id="section9" class="content-item">
+                <span class="content-item-num">09</span>
+                <h2 class="content-item-title">Basic Coding</h2>
+                <div class="content-item-imgWrap">
+                    <div class="content-item-img"></div>
+                </div>
+                <p class="content-item-desc split9">높은 목표를 세우고, 스스로 채찍질한다.</p>
+            </section>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src= https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js></script>
+    <script>
+        // let split1 = $(".split1").text().split("").join("</span><span>");
+        // split1 = "<span>" + split1 + "</span>";
+        // $(".split1").html(split1);
+        // alert(split1);
+
+        $(".content-item-desc").each(function(){
+            let target = $(this).text().split("").join("</span><span aria-hidden='true'>");
+            // aria-hidden='true' : 웹표준, 글자 읽지 않음
+            // aria-label ="읽으려는 부분을 적어준다"
+            target = "<span aria-hidden='true'>" + target + "</span>";
+            $(this).html(target);
+        });
+
+        $(window).scroll(function(){
+            if( $(window).scrollTop() > $(".split1").offset().top - $(window).height()/2 ){
+                $(".split1").addClass("show");
+            }
+            if( $(window).scrollTop() > $(".split2").offset().top -$(window).height()/2 ){
+                $(".split2").addClass("show");
+            }
+            if( $(window).scrollTop() > $(".split3").offset().top -$(window).height()/2 ){
+                $(".split3").addClass("show");
+            }
+            if( $(window).scrollTop() > $(".split4").offset().top -$(window).height()/2 ){
+                $(".split4").addClass("show");
+            }
+            if( $(window).scrollTop() > $(".split5").offset().top -$(window).height()/2 ){
+                $(".split5 span").each(function(i){
+                    setTimeout(function(){
+                        $(".split5 span").eq(i).addClass("show");
+                    }, 100 * (i+1));
+                });
+            };
+            if( $(window).scrollTop() > $(".split6").offset().top -$(window).height()/2 ){
+                $(".split6 span").each(function(i){
+                    setTimeout(function(){
+                        $(".split6 span").eq(i).addClass("show");
+                    }, 100 * (i+1));
+                });
+            };
+            if( $(window).scrollTop() > $(".split7").offset().top -$(window).height()/2 ){
+                $(".split7 span").each(function(i){
+                    setTimeout(function(){
+                        $(".split7 span").eq(i).addClass("show");
+                    }, 100 * (i+1));
+                });
+            };
+            if( $(window).scrollTop() > $(".split8").offset().top -$(window).height()/2 ){
+                $(".split8 span").each(function(i){
+                    gsap.to(".split8 span", { duration: 0.4, y:0, ease: "power3.out", opacity:1, stagger: 0.2 });
+                });
+            };
+            if( $(window).scrollTop() > $(".split9").offset().top -$(window).height()/2 ){
+                $(".split9 span").each(function(i){
+                    gsap.to(".split9 span", { duration: 0.4, y:0, rotation:0, ease: "Back.easeOut,config(1.7)", opacity:1, stagger: 0.1 });
+                });
+            };
+        });
+      
+    </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Parallax01</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            font-size: 16px;
+        }
+
+        body {
+            --color-h1: #dc6e25;
+            --color-title: #fff;
+            --color-sub: #999;
+            --color-link: #000;
+            --color-bg: #111;
+            --image-widthMax: 500px;
+            --aspect-ratio: 32/17;
+            color: var(--color-title);
+            background-color: var(--color-bg);
+            font-family: 'Lato', sans-serif;
+        }
+
+
+        .contents {
+            width: 100%;
+            padding: 35vh 0 40vh;
+            overflow: hidden;
+        }
+
+        .content-item {
+            /* width: 1000px; */
+            --image-width: calc(var(--image-widthMax) * var(--aspect-ratio));
+            width: var(--image-width);
+            margin: 10vh 0 45vh;
+            max-width: 90vw;
+            position: relative;
+        }
+
+        .content-item:nth-child(even) {
+            margin-left: auto;
+        }
+
+        .content-item-num {
+            font-size: 23vw;
+            opacity: 0.04;
+            line-height: 1;
+            font-weight: 100;
+            color: var(--color-title);
+            position: absolute;
+            top: -13vw;
+            right: -10vw;
+        }
+
+        .content-item:nth-child(even) .content-item-num {
+            right: auto;
+            left: -7vw;
+        }
+
+        .content-item-title {
+            text-align: right;
+            font-weight: 300;
+            text-transform: capitalize;
+            color: var(--color-sub);
+            padding-bottom: 0.8vw;
+            font-size: 1.5rem;
+        }
+
+        .content-item:nth-child(even) .content-item-title {
+            text-align: left;
+        }
+
+        .content-item-imgWrap {
+            /* width: 100%;
+            padding-bottom: 57%; */
+            --width: 100%;
+            width: var(--width);
+            padding-bottom: calc(var(--width) / (var(--aspect-ratio)));
+            will-change: transform;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .content-item-img {
+            /*height: 550px;
+            position: absolute;
+            top: -30px; */
+            width: var(--width);
+            background-size: cover;
+            background-position: 50% 0;
+            --overflow: 40px;
+            height: calc(100% + (2 * var(--overflow)));
+            position: absolute;
+            top: calc(-1 * var(--overflow));
+            will-change: transform;
+        }
+
+        .content-item-desc {
+            font-size: 6vw;
+            line-height: 1.2;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--color-title);
+            text-align: right;
+            word-break: keep-all;
+            margin-top: -8vw;
+            margin-right: -5vw;
+            position: relative;
+            z-index: 20
+        }
+
+        .content-item:nth-child(even) .content-item-desc {
+            text-align: left;
+            margin-right: 0;
+            margin-left: -5vw;
+        }
+
+
+        #section1 .content-item-img {
+            background-image: url(img/so09.jpg);
+        }
+
+        #section2 .content-item-img {
+            background-image: url(img/so02.jpg);
+        }
+
+        #section3 .content-item-img {
+            background-image: url(img/so03.jpg);
+        }
+
+        #section4 .content-item-img {
+            background-image: url(img/so04.jpg);
+        }
+
+        #section5 .content-item-img {
+            background-image: url(img/so05.jpg);
+        }
+
+        #section6 .content-item-img {
+            background-image: url(img/so06.jpg);
+        }
+
+        #section7 .content-item-img {
+            background-image: url(img/so07.jpg);
+        }
+
+        #section8 .content-item-img {
+            background-image: url(img/so08.jpg);
+        }
+
+        #section9 .content-item-img {
+            background-image: url(img/so01.jpg);
+        }
+          
+        
+        #wrap {height: 5000px;}
+        h1 {
+            font-size: 8vw;
+            color: var(--color-h1);
+            white-space: nowrap;
+            position: fixed; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            transform-origin: center;
+        }
+        .scroll {position: fixed; left: 10px; top: 10px; z-index: 10000;
+        width: 40px; height: 40px; color: #fff; background: rgba(0,0,0,0.3); text-align: center; line-height: 40px; font-size: 12px;}
+    </style>
+    
+</head>
+
+<body>
+
+    <div class="scroll">0</div>
+    
+    <div id="wrap">
+        <h1
+            data-0 = " left: 50%;"
+            data-1000 = " left: -150%;"
+            data-2000 = " left: 150%;"
+            data-2500 = " left: 50%; top:50%"
+            data-3000 = " left: 50%; top:-50%"
+            data-3500 = " left: 50%; top:50%; transform: scale(1) rotate(0deg) translate(-50%, -50%)"
+            data-4000 = " left: 50%; top:50%; transform: scale(100) rotate(360deg) translate(-50%, -50%)"
+        >Parallax <em>Scrolling</em></h1> 
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://whdgns3242.dothome.co.kr/port/assets/js/skrollr.js"></script>
+    <script>
+        //skrollr
+		var s = skrollr.init({
+			edgeStrategy: 'set',
+			easing: 'linear'
+		});
+        
+        $(window).scroll(function(){
+            var scroll = $(window).scrollTop();
+            $(".scroll").text(scroll)
+        });
+    </script>
+</body></html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .flex { 
+            background: #f7f7f7; border-radius: 3px; padding: 20px;
+            counter-reset: items;}
+        .item { 
+            background: #a2cbfa; border: 1px solid #4390e1;
+            box-sizing: border-box;
+            padding: 10px;
+            border-radius: 3px;
+            min-height: 100px;
+            }
+        .item::before {
+            counter-increment: items;
+            content: counter(items);
+        }
+        /* flex6 */
+        .flex6 { 
+            display: flex; 
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .item6 {
+            flex-basis: 32%;
+            height: 100px; 
+            margin-bottom: 2%;
+        } 
+    </style>
+</head>
+<body>
+    <div class="flex flex6">
+        <div class="item item6"></div>
+        <div class="item item6"></div>
+        <div class="item item6"></div>
+        <div class="item item6"></div>
+        <div class="item item6"></div>
+        <div class="item item6"></div>
+        <div class="item item6"></div>
+        <div class="item item6"></div>
+        <div class="item item6"></div>
+ 
+    </div>
+</body>
+</html>
